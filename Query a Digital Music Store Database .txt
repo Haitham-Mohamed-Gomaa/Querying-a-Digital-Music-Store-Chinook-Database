@@ -1,0 +1,57 @@
+/* Query 1 */
+SELECT ar.ArtistId, ar.Name, COUNT(*) AS Songs
+FROM Genre g
+JOIN Track t
+ON g.GenreId = t.GenreId
+JOIN Album al
+ON t.AlbumId = al.AlbumId
+JOIN Artist ar
+ON al.ArtistId = ar.ArtistId
+WHERE g.Name = 'Rock' 
+GROUP BY ar.ArtistId, ar.Name
+ORDER BY Songs DESC
+LIMIT 10;
+
+
+
+
+/* Query 2 */
+SELECT ar.Name, SUM(il.UnitPrice) AS AmountSpent
+FROM Customer c
+JOIN Invoice i
+ON i.CustomerId = c.CustomerId
+JOIN InvoiceLine il
+ON il.InvoiceId = i.InvoiceId
+JOIN Track t
+ON il.TrackId = t.TrackId
+JOIN Album al
+ON t.AlbumId = al.AlbumId
+JOIN Artist ar
+ON al.ArtistId = ar.ArtistId
+GROUP BY ar.Name
+ORDER BY AmountSpent DESC 
+LIMIT 5;
+
+
+
+/* Query 3 */
+SELECT i.CustomerId, c.FirstName|| " " ||c.LastName AS CustomerName, SUM(i.total) AS Spent_Money
+FROM Invoice i
+JOIN Customer c
+ON i.CustomerId = c.CustomerId
+GROUP BY i.CustomerId, CustomerName
+ORDER BY Spent_Money DESC, CustomerName
+LIMIT 10;
+
+
+
+/* Query 4 */
+SELECT e.FirstName|| " " ||e.LastName AS SalesSupportAgent, SUM(i.total) AS InvoicesTotal
+FROM Invoice i
+JOIN Customer c
+ON i.CustomerId = c.CustomerId
+JOIN Employee e
+ON c.SupportRepId = e.EmployeeId
+GROUP BY SalesSupportAgent
+ORDER BY InvoicesTotal DESC;
+
